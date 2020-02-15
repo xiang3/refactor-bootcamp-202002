@@ -1,5 +1,7 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.util.stream.Collectors;
+
 /**
  * OrderReceipt prints the details of order including customer name, address, description, quantity,
  * price and amount. It also calculates the sales tax @ 10% and prints as part
@@ -14,44 +16,32 @@ public class OrderReceipt {
         this.order = order;
     }
 
+    private double getTotalSaleTax() {
+        // calculate sales tax @ rate of 10%
+        return order.getLineItems().stream().mapToDouble(orderInfo->orderInfo.totalAmount()*.10).sum();
+    }
+
+    private double getTotalAmount() {
+        // calculate total amount of lineItem = price * quantity + 10 % sales tax
+        return order.getLineItems().stream().mapToDouble(orderInfo->orderInfo.totalAmount()+orderInfo.totalAmount()*.10).sum();
+    }
+
+    private String printOrderInfo() {
+        return order.getLineItems().stream().map(orderInfo->{
+            StringBuilder orderInfoBuffer = new StringBuilder();
+            return orderInfoBuffer.append(orderInfo.getDescription()).append('\t')
+                    .append(orderInfo.getPrice()).append('\t')
+                    .append(orderInfo.getQuantity()).append('\t')
+                    .append(orderInfo.totalAmount()).append('\n').toString();
+        }).collect(Collectors.joining());
+    }
     public String printReceipt() {
-        StringBuilder output = new StringBuilder();
-
-        // print headers
-        output.append("======Printing Orders======\n");
-
-        // print date, bill no, customer name
-//        output.append("Date - " + order.getDate();
-        output.append(order.getCustomerName());
-        output.append(order.getCustomerAddress());
-//        output.append(order.getCustomerLoyaltyNumber());
-
-        // prints lineItems
-        double totSalesTx = 0d;
-        double tot = 0d;
-        for (LineItem lineItem : order.getLineItems()) {
-            output.append(lineItem.getDescription());
-            output.append('\t');
-            output.append(lineItem.getPrice());
-            output.append('\t');
-            output.append(lineItem.getQuantity());
-            output.append('\t');
-            output.append(lineItem.totalAmount());
-            output.append('\n');
-
-            // calculate sales tax @ rate of 10%
-            double salesTax = lineItem.totalAmount() * .10;
-            totSalesTx += salesTax;
-
-            // calculate total amount of lineItem = price * quantity + 10 % sales tax
-            tot += lineItem.totalAmount() + salesTax;
-        }
-
-        // prints the state tax
-        output.append("Sales Tax").append('\t').append(totSalesTx);
-
-        // print total amount
-        output.append("Total Amount").append('\t').append(tot);
-        return output.toString();
+        StringBuilder receiptBuffer = new StringBuilder();
+        return receiptBuffer.append("======Printing Orders======\n")
+                .append(order.getCustomerName())
+                .append(order.getCustomerAddress())
+                .append(printOrderInfo())
+                .append("Sales Tax").append('\t').append(getTotalSaleTax())
+                .append("Total Amount").append('\t').append(getTotalAmount()).toString();
     }
 }
