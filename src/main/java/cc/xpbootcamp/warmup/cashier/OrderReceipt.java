@@ -21,6 +21,8 @@ public class OrderReceipt {
 
     private static final String DISCOUNT_PRINT_FORMAT = "折扣: %.2f\n";
 
+    private static final String ORDER_ITEM_PRINT_FORMAT = "%s, %.2f x %s, %.2f\n";
+
     private static final String PURCHASE_TIME_PRINT_FORMAT = "yyyy年M月d日，EEEE";
 
     private static final String BLANK_LINE = "\n";
@@ -38,7 +40,7 @@ public class OrderReceipt {
         return receiptBuffer.append( SLOGAN)
                 .append(printPurchaseTime())
                 .append(BLANK_LINE)
-                .append(printOrderSummaryInfos())
+                .append(printOrderItems())
                 .append(TRANSVERSE_LINE)
                 .append(printPriceInfo()).toString();
     }
@@ -68,13 +70,12 @@ public class OrderReceipt {
        return priceBuffer.append(printTotalSaleTax()).append(printDiscount()).append(printTotalAmount()).toString();
     }
 
-    private String printOrderSummaryInfos() {
-        return order.getOrderInfos().stream().map(orderInfo->{
-            StringBuilder orderInfoBuffer = new StringBuilder();
-            return orderInfoBuffer.append(orderInfo.getDescription()).append(", ")
-                    .append(String.format("%.2f",orderInfo.getPrice())).append(" x ")
-                    .append(orderInfo.getQuantity()).append(", ")
-                    .append(String.format("%.2f",orderInfo.totalAmount())).append('\n').toString();
-        }).collect(Collectors.joining());
+    private String printOrderItems() {
+        return order.getOrderInfos().stream().map(orderInfo->
+            String.format(ORDER_ITEM_PRINT_FORMAT,
+                    orderInfo.getDescription(),
+                    orderInfo.getPrice(),
+                    orderInfo.getQuantity(),
+                    orderInfo.totalAmount())).collect(Collectors.joining());
     }
 }
