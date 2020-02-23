@@ -5,15 +5,15 @@ import java.util.List;
 
 public class Order {
     private Date purchaseTime;
-    private List<OrderSummaryInfo> orderSummaryInfoList;
+    private List<OrderItem> orderItemList;
 
-    public Order(List<OrderSummaryInfo> orderSummaryInfoList, Date purchaseTime) {
+    public Order(List<OrderItem> orderItemList, Date purchaseTime) {
         this.purchaseTime = purchaseTime;
-        this.orderSummaryInfoList = orderSummaryInfoList;
+        this.orderItemList = orderItemList;
     }
 
-    public List<OrderSummaryInfo> getOrderInfos() {
-        return orderSummaryInfoList;
+    public List<OrderItem> getOrderInfos() {
+        return orderItemList;
     }
 
     public Date getPurchaseTime() {
@@ -22,12 +22,12 @@ public class Order {
 
     public double getTotalSaleTax() {
         // calculate sales tax @ rate of 10%
-        return getOrderInfos().stream().mapToDouble(orderSummaryInfo -> orderSummaryInfo.totalAmount()*.10).sum();
+        return getOrderInfos().stream().mapToDouble(orderItem -> orderItem.totalAmount()*.10).sum();
     }
 
     public double getTotalAmount() {
         // calculate total amount of lineItem = price * quantity + 10 % sales tax
-        return getOrderInfos().stream().mapToDouble(orderSummaryInfo -> orderSummaryInfo.totalAmount()+ orderSummaryInfo.totalAmount()*.10).sum();
+        return getOrderInfos().stream().mapToDouble(orderItem -> orderItem.totalAmount()+ orderItem.totalAmount()*.10).sum();
     }
 
     public double getWednesdayActivityPrice() {

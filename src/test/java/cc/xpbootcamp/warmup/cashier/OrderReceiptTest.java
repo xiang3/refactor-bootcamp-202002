@@ -12,12 +12,12 @@ import static org.hamcrest.core.StringContains.containsString;
 public class OrderReceiptTest {
     @Test
     public void shouldPrintOrderInfoAndSalesTaxInformation() {
-        List<OrderSummaryInfo> orderSummaryInfos = new ArrayList<OrderSummaryInfo>() {{
-            add(new OrderSummaryInfo("milk", 10.0, 2));
-            add(new OrderSummaryInfo("biscuits", 5.0, 5));
-            add(new OrderSummaryInfo("chocolate", 20.0, 1));
+        List<OrderItem> orderItems = new ArrayList<OrderItem>() {{
+            add(new OrderItem("milk", 10.0, 2));
+            add(new OrderItem("biscuits", 5.0, 5));
+            add(new OrderItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(orderSummaryInfos, new Date(1582096830000L)));
+        OrderReceipt receipt = new OrderReceipt(new Order(orderItems, new Date(1582096830000L)));
 
         String output = receipt.printReceipt();
 
@@ -40,12 +40,12 @@ public class OrderReceiptTest {
 
     @Test
     public void shouldPrintDiscountWhenDayIsWednesday() {
-        List<OrderSummaryInfo> orderSummaryInfos = new ArrayList<OrderSummaryInfo>() {{
-            add(new OrderSummaryInfo("milk", 10.0, 2));
-            add(new OrderSummaryInfo("biscuits", 5.0, 5));
-            add(new OrderSummaryInfo("chocolate", 20.0, 1));
+        List<OrderItem> orderItems = new ArrayList<OrderItem>() {{
+            add(new OrderItem("milk", 10.0, 2));
+            add(new OrderItem("biscuits", 5.0, 5));
+            add(new OrderItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(orderSummaryInfos, new Date(1582096830000L)));
+        OrderReceipt receipt = new OrderReceipt(new Order(orderItems, new Date(1582096830000L)));
 
         String output = receipt.printReceipt();
         assertThat(output, containsString("折扣: 70.07\n"));
@@ -53,12 +53,12 @@ public class OrderReceiptTest {
 
     @Test
     public void shouldDiscoverDiscountWhenDayNotIsWednesday() {
-        List<OrderSummaryInfo> orderSummaryInfos = new ArrayList<OrderSummaryInfo>() {{
-            add(new OrderSummaryInfo("milk", 10.0, 2));
-            add(new OrderSummaryInfo("biscuits", 5.0, 5));
-            add(new OrderSummaryInfo("chocolate", 20.0, 1));
+        List<OrderItem> orderItems = new ArrayList<OrderItem>() {{
+            add(new OrderItem("milk", 10.0, 2));
+            add(new OrderItem("biscuits", 5.0, 5));
+            add(new OrderItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(orderSummaryInfos, new Date(1582299930000L)));
+        OrderReceipt receipt = new OrderReceipt(new Order(orderItems, new Date(1582299930000L)));
 
         String output = receipt.printReceipt();
         assertThat(output, not(containsString("折扣: 70.07\n")));

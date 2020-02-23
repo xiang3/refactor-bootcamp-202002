@@ -1,11 +1,11 @@
 package cc.xpbootcamp.warmup.cashier;
 
-public class OrderSummaryInfo {
+public class OrderItem {
 	private String desc;
 	private double price;
 	private int qty;
 
-	public OrderSummaryInfo(String desc, double price, int qty) {
+	public OrderItem(String desc, double price, int qty) {
 		super();
 		this.desc = desc;
 		this.price = price;
