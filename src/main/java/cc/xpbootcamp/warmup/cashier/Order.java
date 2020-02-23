@@ -1,27 +1,37 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.util.Date;
 import java.util.List;
 
 public class Order {
-    String cName;
-    String addr;
-    List<OrderInfo> orderInfoList;
+    private Date purchaseTime;
+    private List<OrderSummaryInfo> orderSummaryInfoList;
 
-    public Order(String cName, String addr, List<OrderInfo> orderInfoList) {
-        this.cName = cName;
-        this.addr = addr;
-        this.orderInfoList = orderInfoList;
+    public Order(List<OrderSummaryInfo> orderSummaryInfoList, Date purchaseTime) {
+        this.purchaseTime = purchaseTime;
+        this.orderSummaryInfoList = orderSummaryInfoList;
     }
 
-    public String getCustomerName() {
-        return cName;
+    public List<OrderSummaryInfo> getOrderInfos() {
+        return orderSummaryInfoList;
     }
 
-    public String getCustomerAddress() {
-        return addr;
+    public Date getPurchaseTime() {
+        return purchaseTime;
     }
 
-    public List<OrderInfo> getLineItems() {
-        return orderInfoList;
+    public double getTotalSaleTax() {
+        // calculate sales tax @ rate of 10%
+        return getOrderInfos().stream().mapToDouble(orderSummaryInfo -> orderSummaryInfo.totalAmount()*.10).sum();
+    }
+
+    public double getTotalAmount() {
+        // calculate total amount of lineItem = price * quantity + 10 % sales tax
+        return getOrderInfos().stream().mapToDouble(orderSummaryInfo -> orderSummaryInfo.totalAmount()+ orderSummaryInfo.totalAmount()*.10).sum();
+    }
+
+    public double getWednesdayActivityPrice() {
+        // wednesday activity price = total price * 98%
+        return getTotalAmount()*.98;
     }
 }
