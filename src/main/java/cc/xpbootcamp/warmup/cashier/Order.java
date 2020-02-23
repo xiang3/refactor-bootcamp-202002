@@ -20,18 +20,18 @@ public class Order {
         return purchaseTime;
     }
 
-    public double getTotalSaleTax() {
+    public double calculateTotalSaleTax() {
         // calculate sales tax @ rate of 10%
         return getOrderInfos().stream().mapToDouble(orderItem -> orderItem.totalAmount()*.10).sum();
     }
 
-    public double getTotalAmount() {
+    public double calculateTotalAmount() {
         // calculate total amount of lineItem = price * quantity + 10 % sales tax
         return getOrderInfos().stream().mapToDouble(orderItem -> orderItem.totalAmount()+ orderItem.totalAmount()*.10).sum();
     }
 
-    public double getWednesdayActivityPrice() {
+    public double calculateWednesdayActivityPrice() {
         // wednesday activity price = total price * 98%
-        return getTotalAmount()*.98;
+        return calculateTotalAmount()*.98;
     }
 }

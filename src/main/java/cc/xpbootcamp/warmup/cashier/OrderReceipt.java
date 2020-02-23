@@ -51,18 +51,18 @@ public class OrderReceipt {
     }
 
     private String printTotalSaleTax() {
-        return String.format(SALES_TAX_PRINT_FORMAT, order.getTotalSaleTax());
+        return String.format(SALES_TAX_PRINT_FORMAT, order.calculateTotalSaleTax());
     }
 
     private String printTotalAmount() {
-        return String.format(TOTAL_AMOUNT_PRINT_FORMAT, order.getTotalAmount());
+        return String.format(TOTAL_AMOUNT_PRINT_FORMAT, order.calculateTotalAmount());
     }
 
     private String printDiscount() {
         Calendar instance = Calendar.getInstance();
         instance.setTime(order.getPurchaseTime());
         return instance.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY ?
-                String.format(DISCOUNT_PRINT_FORMAT, order.getWednesdayActivityPrice()) : "";
+                String.format(DISCOUNT_PRINT_FORMAT, order.calculateWednesdayActivityPrice()) : "";
     }
 
     private String printPriceInfo() {
